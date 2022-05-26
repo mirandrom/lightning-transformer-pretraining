@@ -27,7 +27,8 @@ while runs will be saved in a `runs` subdirectory.
 To see all options, run:
 ```bash
 python ltp/hf_mlm/run.py --help
-
+```
+~~~
 options:
   -h, --help            show this help message and exit
   --dataset_name DATASET_NAME
@@ -109,7 +110,7 @@ options:
   --devices DEVICES     Number of accelerator devices or list of device ids.Must be a str that will evaluate to a python expression. E.g. "1" or "[0,1]". (default: 1)
   --num_nodes NUM_NODES
                         Number of nodes. (default: 1)
-  --strategy STRATEGY   Set to `ddp` for multiple devices or nodes. (default: None)
+  --strategy STRATEGY   Set to `ddp` for multiple devices or nodes. Can also be set to e.g. `deepspeed_stage_3_offload` or any other keyword strategy supported by pytorch-lightning. (default: None)
   --fault_tolerant [FAULT_TOLERANT]
                         Whether to run pytorch-lightning in fault-tolerant mode. See: https://pytorch-lightning.readthedocs.io/en/1.6.3/advanced/fault_tolerant_training.html?highlight=fault%20tolerant and:
                         https://github.com/PyTorchLightning/pytorch-lightning/blob/1.6.3/pl_examples/fault_tolerant/automatic.py (default: True)
@@ -123,5 +124,5 @@ options:
                         Weights and bias project to log to. (default: None)
   --wandb_entity WANDB_ENTITY
                         Weights and bias entity to log to. (default: None)
-```
+~~~
 

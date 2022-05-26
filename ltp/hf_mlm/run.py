@@ -87,7 +87,10 @@ class HfMlmTrainerConfig:
     )
     strategy: str = field(
         default=None,
-        metadata={'help': 'Set to `ddp` for multiple devices or nodes.'}
+        metadata={'help': 'Set to `ddp` for multiple devices or nodes. \n'
+                          'Can also be set to e.g. `deepspeed_stage_3_offload` \n'
+                          'or any other keyword strategy supported by '
+                          'pytorch-lightning. '}
     )
     fault_tolerant: bool = field(
         default=True,
