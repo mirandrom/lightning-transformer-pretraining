@@ -205,5 +205,6 @@ def main():
         plugins=plugins,
     )
     model = HfMlmModel(mc)
-    trainer.fit(model)
+    datamodule = HfMlmDataModule(dc)
+    trainer.fit(model=model, datamodule=datamodule)
     wandb.finish()
