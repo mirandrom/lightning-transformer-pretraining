@@ -1,5 +1,8 @@
 # lightning-transformer-pretraining
-Pretraining transformer language models with pytorch-lightning
+Pretraining transformer language models with pytorch-lightning.
+
+This repository is a work in progress, with the main goal of providing skeleton structures over which to build simple yet scalable experiment workflows for language model pretraining using pytorch-lightning.
+
 
 
 ## Setup
