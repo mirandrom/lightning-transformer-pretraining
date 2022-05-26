@@ -20,15 +20,15 @@ logger = get_logger(__name__)
 
 @dataclass
 class HfMlmDataModuleConfig:
-    dataset_name: Union[List[str], str] = field(
-        default='wikipedia',
-        metadata={'help': 'Huggingface dataset name(s); e.g. `wikipedia`.'}
+    dataset_name: str = field(
+        default='wikitext',
+        metadata={'help': 'Huggingface dataset name(s); e.g. `wikitext`.'}
     )
-    dataset_config_name: Union[List[str], str] = field(
-        default='20200501.en',
+    dataset_config_name: str = field(
+        default='wikitext-2-raw-v1',
         metadata={'help': 'Huggingface dataset config name(s), aligned with '
-                          '`dataset_name` if list; e.g. `20200501.en` for '
-                          '`wikipedia`'}
+                          '`dataset_name` if list; e.g. `wikitext-2-raw-v1` for '
+                          '`wikitext`'}
     )
     valid_split: float = field(
         default=0.05,
@@ -64,13 +64,13 @@ class HfMlmDataModuleConfig:
         default=0,
         metadata={'help': 'Number of workers for dataloader.'}
     )
-    seed: int = field(
+    data_seed: int = field(
         default=1234,
         metadata={'help': 'Seed for dataset splitting and masking.'}
     )
-    cache_dir: Union[str, Path] = field(
+    cache_dir: str = field(
         default=CACHE_DIR,
-        metadata={'help': f"Directory for caching preprocessed dataset. "
+        metadata={'help': f"Directory for caching preprocessed dataset.\n"
                           f"Defaults to {CACHE_DIR}"}
     )
     overwrite: bool = field(
@@ -180,7 +180,7 @@ class HfMlmDataModule(pl.LightningDataModule):
         elif "train" in d:
             split_dataset = d["train"].train_test_split(
                 test_size=self.config.valid_split,
-                seed=self.config.seed,
+                seed=self.config.data_seed,
             )
             d["train"] = split_dataset["train"]
             d["validation"] = split_dataset["test"]

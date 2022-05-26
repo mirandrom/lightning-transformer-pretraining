@@ -8,10 +8,11 @@ from pytorch_lightning.loggers import WandbLogger
 import transformers as tr
 import wandb
 
-from .data import HfMlmDataModule, HfMlmDataModuleConfig
-from .model import HfMlmModel, HfMlmModelConfig
-from ..config import LTP_RUN_CACHE
+from ltp.hf_mlm.data import HfMlmDataModule, HfMlmDataModuleConfig
+from ltp.hf_mlm.model import HfMlmModel, HfMlmModelConfig
+from ltp.config import LTP_RUN_CACHE
 
+from typing import *
 
 @dataclass
 class HfMlmTrainerConfig:
@@ -54,6 +55,10 @@ class HfMlmTrainerConfig:
         default=0,
         metadata={'help': 'Limit validation batches. Set to 0.0 to skip.'}
     )
+    skip_eval: bool = field(
+        default=False,
+        metadata={'help': 'Skip eval loop when training.'}
+    )
     precision: int = field(
         default=32,
         metadata={'help': 'Precision flag for pytorch-lightning Trainer.'}
@@ -87,7 +92,7 @@ class HfMlmTrainerConfig:
     fault_tolerant: bool = field(
         default=True,
         metadata={'help': 'Whether to run pytorch-lightning in fault-tolerant mode. \n'
-                          'See: https://pytorch-lightning.readthedocs.io/en/1.6.3/advanced/fault_tolerant_training.html?highlight=fault%20tolerant \n'
+                          'See: https://pytorch-lightning.readthedocs.io/en/1.6.3/advanced/fault_tolerant_training.html?highlight=fault%%20tolerant \n'
                           'and: https://github.com/PyTorchLightning/pytorch-lightning/blob/1.6.3/pl_examples/fault_tolerant/automatic.py'}
     )
     slurm_auto_requeue: bool = field(
@@ -100,7 +105,7 @@ class HfMlmTrainerConfig:
         metadata={'help': 'Weights and bias project to log to.'}
     )
     wandb_entity: str = field(
-        default="clac_nsl",
+        default=None,
         metadata={'help': 'Weights and bias entity to log to.'}
     )
 
@@ -111,6 +116,9 @@ class HfMlmTrainerConfig:
         self.experiment_id = self.init_experiment_id()
         self.experiment_dir = self.init_experiment_dir()
         self.devices = eval(self.devices)
+        if self.skip_eval:
+            self.limit_val_batches = 0.0
+            self.eval_every_n_steps = 1.0
         if isinstance(self.devices, list):
             self.num_devices = len(self.devices)
         elif isinstance(self.devices, int):
@@ -208,3 +216,6 @@ def main():
     datamodule = HfMlmDataModule(dc)
     trainer.fit(model=model, datamodule=datamodule)
     wandb.finish()
+
+if __name__ == '__main__':
+    main()

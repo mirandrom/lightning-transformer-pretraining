@@ -17,7 +17,7 @@ class HfMlmModelConfig:
         default=False,
         metadata={'help': 'Whether to load pretrained model weights.'}
     )
-    seed: int = field(
+    model_seed: int = field(
         default=1337,
         metadata={'help': 'Seed to be used by `pl.seed_everything`.'}
     )
@@ -43,7 +43,7 @@ class HfMlmModelConfig:
     gradient_clip_val: float = field(
         default=0,
         metadata={'help': 'Gradient clipping (by L2 norm); '
-                          'for use by pytorch-ligtning `Trainer`. '}
+                          'for use by pytorch-lightning `Trainer`. '}
     )
     adam_eps: float = field(
         default=1e-8,
@@ -68,7 +68,7 @@ class HfMlmModel(pl.LightningModule):
         super().__init__()
         self.config = config
         self.save_hyperparameters(config.__dict__)
-        pl.seed_everything(self.config.seed)
+        pl.seed_everything(self.config.model_seed)
         self.model = self.init_model()
 
     def init_model(self):
