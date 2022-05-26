@@ -161,12 +161,11 @@ class HfMlmDataModule(pl.LightningDataModule):
                 max_length=c.max_seq_len,
                 return_special_tokens_mask=True,
             )
-
         tokenized_datasets = d.map(
             batch_preprocess,
             batched=True,
             num_proc=c.num_preprocess_workers,
-            remove_columns=[c.text_col],
+            remove_columns=d['train'].column_names,
             desc="Running tokenizer on dataset line_by_line",
         )
 
