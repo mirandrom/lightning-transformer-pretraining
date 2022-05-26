@@ -22,19 +22,15 @@ logger = get_logger(__name__)
 class HfMlmDataModuleConfig:
     dataset_name: str = field(
         default='wikitext',
-        metadata={'help': 'Huggingface dataset name(s); e.g. `wikitext`.'}
+        metadata={'help': 'Huggingface dataset name.'}
     )
     dataset_config_name: str = field(
         default='wikitext-2-raw-v1',
-        metadata={'help': 'Huggingface dataset config name(s), aligned with '
-                          '`dataset_name` if list; e.g. `wikitext-2-raw-v1` for '
-                          '`wikitext`'}
+        metadata={'help': 'Huggingface dataset config name.'}
     )
     valid_split: float = field(
         default=0.05,
-        metadata={'help': 'Huggingface dataset config name(s), aligned with '
-                          '`dataset_name` if list; e.g. `20200501.en` for '
-                          '`wikipedia`'}
+        metadata={'help': 'Fraction of dataset to reserve for validation.'}
     )
     text_col: str = field(
         default='text',

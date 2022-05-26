@@ -32,11 +32,11 @@ python ltp/hf_mlm/run.py --help
 options:
   -h, --help            show this help message and exit
   --dataset_name DATASET_NAME
-                        Huggingface dataset name(s); e.g. `wikitext`. (default: wikitext)
+                        Huggingface dataset name. (default: wikitext)
   --dataset_config_name DATASET_CONFIG_NAME
-                        Huggingface dataset config name(s), aligned with `dataset_name` if list; e.g. `wikitext-2-raw-v1` for `wikitext` (default: wikitext-2-raw-v1)
+                        Huggingface dataset config name. (default: wikitext-2-raw-v1)
   --valid_split VALID_SPLIT
-                        Huggingface dataset config name(s), aligned with `dataset_name` if list; e.g. `20200501.en` for `wikipedia` (default: 0.05)
+                        Fraction of dataset to reserve for validation. (default: 0.05)
   --text_col TEXT_COL   Name of text column in Huggingface dataset. (default: text)
   --hf_tokenizer HF_TOKENIZER
                         Name of pretrained Huggingface tokenizer. (default: bert-base-uncased)
