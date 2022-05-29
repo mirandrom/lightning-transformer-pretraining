@@ -73,6 +73,14 @@ class HfMlmDataModuleConfig:
         default=False,
         metadata={'help': "Rerun preprocessing and overwrite cache."}
     )
+    shuffle: bool = field(
+        default=False,
+        metadata={'help': "Shuffle dataset in dataloader."}
+    )
+    shuffle_seed: int = field(
+        default=0xBE575E3D,
+        metadata={'help': "Seed for shuffling dataset."}
+    )
 
     def __post_init__(self):
         self.fingerprint = self._init_fingerprint()
@@ -207,18 +215,24 @@ class HfMlmDataModule(pl.LightningDataModule):
 
     def train_dataloader(self) -> TRAIN_DATALOADERS:
         c = self.config
+        rng = torch.Generator().manual_seed(c.shuffle_seed) if c.shuffle else None
         return DataLoader(
             self.dataset['train'],
             batch_size=c.per_device_bsz,
             collate_fn=self.collate_fn,
-            num_workers=c.num_dataloader_workers
+            num_workers=c.num_dataloader_workers,
+            shuffle=c.shuffle,
+            generator=rng,
         )
 
     def val_dataloader(self) -> EVAL_DATALOADERS:
         c = self.config
+        rng = torch.Generator().manual_seed(c.shuffle_seed)
         return DataLoader(
             self.dataset['validation'],
             batch_size=c.per_device_bsz,
             collate_fn=self.collate_fn,
-            num_workers=c.num_dataloader_workers
+            num_workers=c.num_dataloader_workers,
+            shuffle=True,
+            generator=rng,
         )
